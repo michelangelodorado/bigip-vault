@@ -14,7 +14,8 @@ This repo uses HashiCorp Vault to manage SSL Certificates
 ```
 export VAULT_ADDR=http://127.0.0.1:8200
 export VAULT_TOKEN=root
-vault write pki/roles/web-certs allowed_domains=demo.com ttl=60s max_ttl=30m allow_subdomains=true 
+vault secrets enable -path=pki_int pki
+vault write pki_int/roles/web-certs allowed_domains=demof5.com ttl=160s max_ttl=30m allow_subdomains=true 
 vault auth enable approle
 vault policy write app-pol app-pol.hcl
 vault write auth/approle/role/web-certs policies="app-pol"
