@@ -7,7 +7,7 @@ This repo uses HashiCorp Vault to manage SSL Certificates
 - HashiCorp Vault 1.5
 
 # How to use Repo ?
-- Git Clone repo using ``` https://github.com/michelangelodorado/bigip-vault.git ```
+- Git Clone repo using ``` https://github.com/michelangelodorado/f5bigip-vault.git ```
 - This will deploy F5 BIG-IP intance & install Vault on ubuntu on AWS
 - SSH into the ubuntu server and cd/tmp
 - Configure vault and use vaul agent
