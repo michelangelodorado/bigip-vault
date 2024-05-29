@@ -24,38 +24,25 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-# Generate a tfvars file for AS3 installation
-data "template_file" "tfvars" {
-  template = file("as3/terraform.tfvars.example")
-  vars = {
-    addr        = aws_eip.f5.public_ip
-    port        = "8443"
-    username    = "admin"
-    pwd         = random_string.password.result
-    CREATE_VIP  = local.create_vip
-    DELETE_VIP  = local.delete_vip
-    INSTALL_AS3 = local.install_as3
-  }
-}
-
 resource "local_file" "tfvars" {
-  content  = data.template_file.tfvars.rendered
-  filename = "as3/stuff.sh"
+   content  = templatefile("${path.module}/as3/terraform.tfvars.example", {
+     addr        = aws_eip.f5.public_ip
+     port        = "8443"
+     username    = "admin"
+     pwd         = random_string.password.result
+     CREATE_VIP  = local.create_vip
+     DELETE_VIP  = local.delete_vip
+     INSTALL_AS3 = local.install_as3
+   })
+   filename = "as3/stuff.sh"
 }
-
-# Generate file to update Certs
-data "template_file" "updt_cert" {
-  template = file("as3/terraform.tfvars.cert")
-  vars = {
-    addr        = aws_eip.f5.public_ip
-    port        = "8443"
-    username    = "admin"
-    pwd         = random_string.password.result
-    UPDATE_CERT = local.update_vip
-  }
-}
-
 resource "local_file" "updt_cert" {
-  content  = data.template_file.updt_cert.rendered
-  filename = "as3/updt.sh"
+   content  = templatefile("${path.module}/as3/terraform.tfvars.cert", {
+     addr        = aws_eip.f5.public_ip
+     port        = "8443"
+     username    = "admin"
+     pwd         = random_string.password.result
+     UPDATE_CERT = local.update_vip
+   })
+   filename = "as3/updt.sh"
 }
