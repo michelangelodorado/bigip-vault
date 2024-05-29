@@ -1,6 +1,5 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> v2.0"
 
   name = "${var.prefix}-f5-vpc"
   cidr = "10.0.0.0/16"
@@ -17,7 +16,7 @@ module "vpc" {
 
 resource "aws_eip" "f5" {
   instance = aws_instance.f5.id
-  vpc      = true
+  domain = "vpc"
 }
 
 resource "aws_security_group" "f5" {
